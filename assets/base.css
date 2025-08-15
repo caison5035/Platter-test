@@ -3597,9 +3597,4 @@ details-disclosure > details {
 }
 
 
-@media(max-width:600px){
 
-  ul#product-grid {
-    display: flex;
-}
-}

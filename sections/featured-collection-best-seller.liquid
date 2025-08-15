@@ -5,43 +5,50 @@
   assign grid_id = 'product-grid-' | append: section.id
 
   assign link_href = section.settings.link_url
-  if link_href == blank and collection.url
+  if link_href == blank and collection and collection.url
     assign link_href = collection.url
   endif
 
- 
   assign title_style = ''
   if section.settings.title_use_custom_font and section.settings.title_font != blank
-    assign title_style = title_style | append: 'font-family: ' | append: section.settings.title_font.family | append: ', ' | append: section.settings.title_font.fallback_families | append: ';'
+    assign title_style = title_style | append: 'font-family:"' | append: section.settings.title_font.family | append: '", ' | append: section.settings.title_font.fallback_families | append: ';'
   endif
-  assign title_style = title_style | append: 'font-size: ' | append: section.settings.title_font_size | append: 'px;'
-  assign title_style = title_style | append: 'font-weight: ' | append: section.settings.title_font_weight | append: ';'
-  assign title_style = title_style | append: 'color: ' | append: section.settings.title_color | append: ';'
+  assign title_style = title_style | append: 'font-size:' | append: section.settings.title_font_size | append: 'px;' | append: 'font-weight:' | append: section.settings.title_font_weight | append: ';' | append: 'color:' | append: section.settings.title_color | append: ';'
 
   assign link_style = ''
   if section.settings.link_use_custom_font and section.settings.link_font != blank
-    assign link_style = link_style | append: 'font-family: ' | append: section.settings.link_font.family | append: ', ' | append: section.settings.link_font.fallback_families | append: ';'
+    assign link_style = link_style | append: 'font-family:"' | append: section.settings.link_font.family | append: '", ' | append: section.settings.link_font.fallback_families | append: ';'
   endif
-  assign link_style = link_style | append: 'font-size: ' | append: section.settings.link_font_size | append: 'px;'
-  assign link_style = link_style | append: 'font-weight: ' | append: section.settings.link_font_weight | append: ';'
-  assign link_style = link_style | append: 'color: ' | append: section.settings.link_color | append: ';'
+  assign link_style = link_style | append: 'font-size:' | append: section.settings.link_font_size | append: 'px;' | append: 'font-weight:' | append: section.settings.link_font_weight | append: ';' | append: 'color:' | append: section.settings.link_color | append: ';'
 
   assign product_title_style = ''
   if section.settings.product_title_use_custom_font and section.settings.product_title_font != blank
-    assign product_title_style = product_title_style | append: 'font-family: ' | append: section.settings.product_title_font.family | append: ', ' | append: section.settings.product_title_font.fallback_families | append: ';'
+    assign product_title_style = product_title_style | append: 'font-family:"' | append: section.settings.product_title_font.family | append: '", ' | append: section.settings.product_title_font.fallback_families | append: ';'
   endif
-  assign product_title_style = product_title_style | append: 'font-size: ' | append: section.settings.product_title_font_size | append: 'px;'
-  assign product_title_style = product_title_style | append: 'font-weight: ' | append: section.settings.product_title_font_weight | append: ';'
-  assign product_title_style = product_title_style | append: 'color: ' | append: section.settings.product_title_color | append: ';'
+  assign product_title_style = product_title_style | append: 'font-size:' | append: section.settings.product_title_font_size | append: 'px;' | append: 'font-weight:' | append: section.settings.product_title_font_weight | append: ';' | append: 'color:' | append: section.settings.product_title_color | append: ';'
 
   assign product_price_style = ''
   if section.settings.product_price_use_custom_font and section.settings.product_price_font != blank
-    assign product_price_style = product_price_style | append: 'font-family: ' | append: section.settings.product_price_font.family | append: ', ' | append: section.settings.product_price_font.fallback_families | append: ';'
+    assign product_price_style = product_price_style | append: 'font-family:"' | append: section.settings.product_price_font.family | append: '", ' | append: section.settings.product_price_font.fallback_families | append: ';'
   endif
-  assign product_price_style = product_price_style | append: 'font-size: ' | append: section.settings.product_price_font_size | append: 'px;'
-  assign product_price_style = product_price_style | append: 'font-weight: ' | append: section.settings.product_price_font_weight | append: ';'
-  assign product_price_style = product_price_style | append: 'color: ' | append: section.settings.product_price_color | append: ';'
+  assign product_price_style = product_price_style | append: 'font-size:' | append: section.settings.product_price_font_size | append: 'px;' | append: 'font-weight:' | append: section.settings.product_price_font_weight | append: ';' | append: 'color:' | append: section.settings.product_price_color | append: ';'
 -%}
+
+{%- style -%}
+  /* Ensure selected theme fonts are actually loaded */
+  {%- if section.settings.title_use_custom_font and section.settings.title_font != blank -%}
+    {{ section.settings.title_font | font_face }}
+  {%- endif -%}
+  {%- if section.settings.link_use_custom_font and section.settings.link_font != blank -%}
+    {{ section.settings.link_font | font_face }}
+  {%- endif -%}
+  {%- if section.settings.product_title_use_custom_font and section.settings.product_title_font != blank -%}
+    {{ section.settings.product_title_font | font_face }}
+  {%- endif -%}
+  {%- if section.settings.product_price_use_custom_font and section.settings.product_price_font != blank -%}
+    {{ section.settings.product_price_font | font_face }}
+  {%- endif -%}
+{%- endstyle -%}
 
 <div class="color-{{ section.settings.color_scheme }} gradient isolate">
   <div class="py-12 md:py-16 lg:py-20">
@@ -53,7 +60,7 @@
         {%- if link_href != blank and section.settings.link_text != blank -%}
           <a href="{{ link_href }}" class="text-sm font-semibold text-gray-700 hover:text-black flex items-center gap-2" style="{{ link_style }}">
             {{ section.settings.link_text | escape }}
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="12" viewBox="0 0 16 12" fill="none">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="12" viewBox="0 0 16 12" fill="none" aria-hidden="true">
               <path d="M1.33334 6H14.6667M14.6667 6L9.66668 1M14.6667 6L9.66668 11" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
             </svg>
           </a>
@@ -69,13 +76,11 @@
             class="grid grid-cols-2 gap-x-4 gap-y-10 px-4 sm:px-6 md:px-0 md:flex md:flex-nowrap md:gap-x-6"
             role="list"
           >
-            {%- if collection.products.size > 0 -%}
+            {%- if collection and collection.products_count > 0 -%}
               {%- for product in collection.products limit: products_to_show -%}
                 <li
                   class="merch-item md:w-[30%] lg:w-[24%] xl:w-[19%] md:flex-shrink-0"
-                  {% if forloop.index > 4 %}
-                    data-mobile-expandable="true"
-                  {% endif %}
+                  {% if forloop.index > 4 %}data-mobile-expandable="true"{% endif %}
                 >
                   {%- liquid
                     assign bestseller_badge_text = product.metafields.custom[section.settings.bestseller_badge_metafield] | default: product.metafields.custom.bestseller_badge_text
@@ -84,24 +89,18 @@
                   <div class="relative">
                     <div class="relative w-full overflow-hidden rounded-md bg-gray-100 aspect-square group">
                       <a href="{{ product.url }}" aria-label="View details for {{ product.title | escape }}">
-                        
                         <img
                           src="{{ product.featured_image | image_url: width: 500 }}"
                           alt="{{ product.featured_image.alt | default: product.title | escape }}"
                           class="h-full w-full object-cover object-center transition-opacity duration-300 ease-in-out group-hover:opacity-0"
-                          width="500"
-                          height="500"
-                          loading="lazy"
+                          width="500" height="500" loading="lazy"
                         >
-                        
                         {%- assign second_image = product.images[1] | default: product.featured_image -%}
                         <img
                           src="{{ second_image | image_url: width: 500 }}"
                           alt="{{ second_image.alt | default: product.title | escape }}"
                           class="h-full w-full object-cover object-center absolute inset-0 opacity-0 transition-opacity duration-300 ease-in-out group-hover:opacity-100"
-                          width="500"
-                          height="500"
-                          loading="lazy"
+                          width="500" height="500" loading="lazy"
                         >
                       </a>
                       <div class="absolute top-3 left-3 right-3 flex justify-between items-start">
@@ -110,7 +109,6 @@
                         {%- elsif section.settings.show_bestseller_badge and product.tags contains 'bestseller' -%}
                           <div class="product-badge best-seller-badge">Best Seller</div>
                         {%- endif -%}
-                        
                         {%- if save_badge_text != blank -%}
                           <div class="product-badge save-badge ml-auto">{{ save_badge_text }}</div>
                         {%- elsif section.settings.show_save_badge and product.compare_at_price > product.price -%}
@@ -122,14 +120,16 @@
                     </div>
                     <div class="mt-4 text-left space-y-1">
                       <h3 class="text-sm font-bold text-gray-900 uppercase tracking-wider">
-                        <a href="{{ product.url }}" class="hover:underline" style="{{ product_title_style }}">
-                          {{ product.title }}
-                        </a>
+                        <a href="{{ product.url }}" class="hover:underline" style="{{ product_title_style }}">{{ product.title }}</a>
                       </h3>
                       {%- if show_rating -%}
                         <div class="flex items-center" role="img" aria-label="Product rating">
                           <div class="flex items-center">
-                            {%- for i in (1..5) -%}<svg class="h-4 w-4 flex-shrink-0 text-yellow-400" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path fill-rule="evenodd" d="M10.868 2.884c.321-.662 1.215-.662 1.536 0l1.681 3.46c.07.144.217.244.38.265l3.82.555c.706.102.99.972.483 1.45l-2.768 2.698a.424.424 0 00-.123.42l.654 3.803c.12.697-.616 1.235-1.244.91l-3.414-1.795a.43.43 0 00-.416 0l-3.414 1.795c-.628.325-1.364-.213-1.244-.91l.654-3.803a.424.424 0 00-.123-.42L2.093 8.614c-.507-.478-.223-1.348.483-1.45l3.82-.555a.425.425 0 00.38-.265l1.68-3.46z" clip-rule="evenodd"></path></svg>{%- endfor -%}
+                            {%- for i in (1..5) -%}
+                              <svg class="h-4 w-4 flex-shrink-0 text-yellow-400" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                                <path fill-rule="evenodd" d="M10.868 2.884c.321-.662 1.215-.662 1.536 0l1.681 3.46c.07.144.217.244.38.265l3.82.555c.706.102.99.972.483 1.45l-2.768 2.698a.424.424 0 00-.123.42l.654 3.803c.12.697-.616 1.235-1.244.91l-3.414-1.795a.43.43 0 00-.416 0l-3.414 1.795c-.628.325-1.364-.213-1.244-.91l.654-3.803a.424.424 0 00-.123-.42L2.093 8.614c-.507-.478-.223-1.348.483-1.45l3.82-.555a.425.425 0 00.38-.265l1.68-3.46z" clip-rule="evenodd"></path>
+                              </svg>
+                            {%- endfor -%}
                           </div>
                           <span class="text-xs text-gray-500 ml-2">{{ product.metafields.reviews.rating_count | default: 0 }} Reviews</span>
                         </div>
@@ -146,8 +146,8 @@
                   <div class="relative">
                     <div class="relative w-full overflow-hidden rounded-md bg-gray-100 aspect-square group">
                       <a href="#" aria-label="View details for {{ placeholder_title | escape }}">
-                        <img src="https://images.unsplash.com/photo-1523275335684-37898b6baf30?q=80&w=500&h=500&fit=crop" alt="{{ placeholder_title | escape }}" class="h-full w-full object-cover object-center transition-opacity duration-300 ease-in-out group-hover:opacity-0">
-                        <img src="https://images.unsplash.com/photo-1542291026-7eec264c27ff?q=80&w=500&h=500&fit=crop" alt="{{ placeholder_title | escape }} secondary" class="h-full w-full object-cover object-center absolute inset-0 opacity-0 transition-opacity duration-300 ease-in-out group-hover:opacity-100">
+                        <img src="https://images.unsplash.com/photo-1523275335684-37898b6baf30?q=80&w=500&h=500&fit=crop" alt="{{ placeholder_title | escape }}" class="h-full w-full object-cover object-center transition-opacity duration-300 ease-in-out group-hover:opacity-0" width="500" height="500" loading="lazy">
+                        <img src="https://images.unsplash.com/photo-1542291026-7eec264c27ff?q=80&w=500&h=500&fit=crop" alt="{{ placeholder_title | escape }} secondary" class="h-full w-full object-cover object-center absolute inset-0 opacity-0 transition-opacity duration-300 ease-in-out group-hover:opacity-100" width="500" height="500" loading="lazy">
                       </a>
                       <div class="absolute top-3 left-3 right-3 flex justify-between items-start">
                         <div class="product-badge best-seller-badge">Best Seller</div>
@@ -160,7 +160,11 @@
                       </h3>
                       <div class="flex items-center">
                         <div class="flex items-center">
-                          {%- for i in (1..5) -%}<svg class="h-4 w-4 flex-shrink-0 text-yellow-400" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path fill-rule="evenodd" d="M10.868 2.884c.321-.662 1.215-.662 1.536 0l1.681 3.46c.07.144.217.244.38.265l3.82.555c.706.102.99.972.483 1.45l-2.768 2.698a.424.424 0 00-.123.42l.654 3.803c.12.697-.616 1.235-1.244.91l-3.414-1.795a.43.43 0 00-.416 0l-3.414 1.795c-.628.325-1.364-.213-1.244-.91l.654-3.803a.424.424 0 00-.123-.42L2.093 8.614c-.507-.478-.223-1.348.483-1.45l3.82-.555a.425.425 0 00.38-.265l1.68-3.46z" clip-rule="evenodd"></path></svg>{%- endfor -%}
+                          {%- for i in (1..5) -%}
+                            <svg class="h-4 w-4 flex-shrink-0 text-yellow-400" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                              <path fill-rule="evenodd" d="M10.868 2.884c.321-.662 1.215-.662 1.536 0l1.681 3.46c.07.144.217.244.38.265l3.82.555c.706.102.99.972.483 1.45l-2.768 2.698a.424.424 0 00-.123.42l.654 3.803c.12.697-.616 1.235-1.244.91l-3.414-1.795a.43.43 0 00-.416 0l-3.414 1.795c-.628.325-1.364-.213-1.244-.91l.654-3.803a.424.424 0 00-.123-.42L2.093 8.614c-.507-.478-.223-1.348.483-1.45l3.82-.555a.425.425 0 00.38-.265l1.68-3.46z" clip-rule="evenodd"></path>
+                            </svg>
+                          {%- endfor -%}
                         </div>
                         <span class="text-xs text-gray-500 ml-2">1,234 Reviews</span>
                       </div>
@@ -175,7 +179,14 @@
       </div>
     </div>
 
-    {%- assign total_products = collection.products.size | default: products_to_show -%}
+    {%- assign total_products = 0 -%}
+    {%- if collection -%}
+      {%- assign total_products = collection.products_count -%}
+    {%- endif -%}
+    {%- if total_products == 0 -%}
+      {%- assign total_products = products_to_show -%}
+    {%- endif -%}
+
     {%- if total_products > 4 -%}
       <div class="mt-10 text-center md:hidden">
         <button
@@ -192,58 +203,40 @@
 </div>
 
 <style>
-    .product-badge {
-        font-size: 10px;
-        font-weight: 600;
-        padding: 4px 10px;
-        border-radius: 9999px;
-        text-transform: uppercase;
-        letter-spacing: 0.05em;
-    }
-    .best-seller-badge {
-        background-color: #ffffff;
-        color: #000000;
-        border: 1px solid #e5e7eb;
-    }
-    .save-badge {
-        background-color: #22c55e;
-        color: #ffffff;
-    }
+  .product-badge {
+    font-size: 10px;
+    font-weight: 600;
+    padding: 4px 10px;
+    border-radius: 9999px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+  .best-seller-badge {
+    background-color: #ffffff;
+    color: #000000;
+    border: 1px solid #e5e7eb;
+  }
+  .save-badge {
+    background-color: #22c55e;
+    color: #ffffff;
+  }
 
-    @media (min-width: 768px) {
-        .carousel-container {
-            overflow-x: auto;
-            /* For Firefox */
-            scrollbar-width: thin;
-            scrollbar-color: #111827 #e5e7eb;
-        }
-
- 
-        .carousel-container::-webkit-scrollbar {
-            height: 4px; 
-        }
-        .carousel-container:hover::-webkit-scrollbar {
-            height: 6px;
-        }
-        .carousel-container::-webkit-scrollbar-track {
-            background-color: #e5e7eb;
-            border-radius: 3px;
-        }
-        .carousel-container::-webkit-scrollbar-thumb {
-            background-color: #111827;
-            border-radius: 3px;
-        }
-    }
-
-    .merch-item.is-collapsed-mobile {
-        display: none;
-    }
+  @media (min-width: 768px) {
+    .carousel-container {
+       overflow-x: auto;
     
-    @media (min-width: 768px) {
-        .merch-item.is-collapsed-mobile {
-            display: list-item;
-        }
+            /* scrollbar-width: thin; */
+            scrollbar-color: #111827 #e5e7eb;
+            scrollbar-color: auto;
     }
+    .carousel-container::-webkit-scrollbar { height: 2px; }
+    .carousel-container:hover::-webkit-scrollbar { height: 6px; }
+    .carousel-container::-webkit-scrollbar-track { background-color: #e5e7eb; border-radius: 3px; }
+    .carousel-container::-webkit-scrollbar-thumb { background-color: #111827; border-radius: 3px; }
+  }
+
+  .merch-item.is-collapsed-mobile { display: none; }
+  @media (min-width: 768px) { .merch-item.is-collapsed-mobile { display: list-item; } }
 </style>
 
 <script>
@@ -270,13 +263,11 @@
 
     showMoreBtn.addEventListener('click', () => {
       isExpanded = !isExpanded;
-      expandableCards.forEach(card => {
-        card.classList.toggle('is-collapsed-mobile');
-      });
-      showMoreBtn.setAttribute('aria-expanded', isExpanded);
+      expandableCards.forEach(card => card.classList.toggle('is-collapsed-mobile'));
+      showMoreBtn.setAttribute('aria-expanded', String(isExpanded));
       showMoreBtn.textContent = isExpanded ? 'Show Less' : 'Show More';
     });
-    
+
     setInitialState();
     window.addEventListener('resize', setInitialState);
   });
@@ -288,254 +279,83 @@
   "tag": "section",
   "class": "shopify-section-horizontal-showcase",
   "settings": [
-    {
-      "type": "text",
-      "id": "title",
-      "label": "Section Title",
-      "default": "Best Sellers"
+    { "type": "text", "id": "title", "label": "Section Title", "default": "Best Sellers" },
+    { "type": "collection", "id": "collection", "label": "Collection", "info": "Select a collection to display. If empty, placeholder products will be shown." },
+    { "type": "range", "id": "products_to_show", "min": 4, "max": 20, "step": 1, "label": "Number of products to show", "default": 10 },
+    { "type": "checkbox", "id": "show_rating", "label": "Show product ratings", "info": "Requires a Product Reviews app that adds review metafields.", "default": true },
+
+    { "type": "header", "content": "Product Badges" },
+    { "type": "text", "id": "bestseller_badge_metafield", "label": "Best Seller Badge Metafield", "info": "Enter the metafield key (e.g., 'custom.bestseller_text')." },
+    { "type": "text", "id": "save_badge_metafield", "label": "Save Badge Metafield", "info": "Enter the metafield key (e.g., 'custom.save_text')." },
+
+    { "type": "header", "content": "Fallback Badges" },
+    { "type": "checkbox", "id": "show_bestseller_badge", "label": "Show 'Best Seller' badge (fallback)", "default": true },
+    { "type": "checkbox", "id": "show_save_badge", "label": "Show 'Save %' badge (fallback)", "default": true },
+    { "type": "text", "id": "save_badge_text_fallback", "label": "Save badge text (fallback)", "info": "Use '[percent]' to show the discount percentage.", "default": "Save [percent]%" },
+
+    { "type": "header", "content": "Section Link" },
+    { "type": "text", "id": "link_text", "label": "Link Text", "default": "Shop All Best Sellers" },
+    { "type": "url", "id": "link_url", "label": "Link URL", "info": "Leave blank to automatically link to the selected collection." },
+
+    { "type": "color_scheme", "id": "color_scheme", "label": "Section Color Scheme", "default": "scheme-1" },
+
+    { "type": "header", "content": "Typography Settings" },
+    { "type": "paragraph", "content": "Customize the fonts and colors for text elements in this section." },
+
+    { "type": "header", "content": "Section Title" },
+    { "type": "checkbox", "id": "title_use_custom_font", "label": "Use custom font for title", "default": false },
+    { "type": "font_picker", "id": "title_font", "label": "Title Font Family", "default": "assistant_n4" },
+    { "type": "range", "id": "title_font_size", "min": 16, "max": 48, "step": 1, "unit": "px", "label": "Title Font Size", "default": 24 },
+    { "type": "select", "id": "title_font_weight", "label": "Title Font Weight", "options": [
+        { "value": "400", "label": "Normal" },
+        { "value": "500", "label": "Medium" },
+        { "value": "600", "label": "Semi-bold" },
+        { "value": "700", "label": "Bold" }
+      ], "default": "700"
     },
-    {
-      "type": "collection",
-      "id": "collection",
-      "label": "Collection",
-      "info": "Select a collection to display. If empty, placeholder products will be shown."
+    { "type": "color", "id": "title_color", "label": "Title Color", "default": "#111827" },
+
+    { "type": "header", "content": "Section Link" },
+    { "type": "checkbox", "id": "link_use_custom_font", "label": "Use custom font for link", "default": false },
+    { "type": "font_picker", "id": "link_font", "label": "Link Font Family", "default": "assistant_n4" },
+    { "type": "range", "id": "link_font_size", "min": 12, "max": 24, "step": 1, "unit": "px", "label": "Link Font Size", "default": 14 },
+    { "type": "select", "id": "link_font_weight", "label": "Link Font Weight", "options": [
+        { "value": "400", "label": "Normal" },
+        { "value": "500", "label": "Medium" },
+        { "value": "600", "label": "Semi-bold" },
+        { "value": "700", "label": "Bold" }
+      ], "default": "600"
     },
-    {
-      "type": "range",
-      "id": "products_to_show",
-      "min": 4,
-      "max": 20,
-      "step": 1,
-      "label": "Number of products to show",
-      "default": 10
+    { "type": "color", "id": "link_color", "label": "Link Color", "default": "#374151" },
+
+    { "type": "header", "content": "Product Title" },
+    { "type": "checkbox", "id": "product_title_use_custom_font", "label": "Use custom font for product titles", "default": false },
+    { "type": "font_picker", "id": "product_title_font", "label": "Product Title Font Family", "default": "assistant_n4" },
+    { "type": "range", "id": "product_title_font_size", "min": 12, "max": 50, "step": 1, "unit": "px", "label": "Product Title Font Size", "default": 14 },
+    { "type": "select", "id": "product_title_font_weight", "label": "Product Title Font Weight", "options": [
+        { "value": "400", "label": "Normal" },
+        { "value": "500", "label": "Medium" },
+        { "value": "600", "label": "Semi-bold" },
+        { "value": "700", "label": "Bold" }
+      ], "default": "700"
     },
-    {
-      "type": "checkbox",
-      "id": "show_rating",
-      "label": "Show product ratings",
-      "info": "Requires a Product Reviews app that adds review metafields.",
-      "default": true
+    { "type": "color", "id": "product_title_color", "label": "Product Title Color", "default": "#111827" },
+
+    { "type": "header", "content": "Product Price" },
+    { "type": "checkbox", "id": "product_price_use_custom_font", "label": "Use custom font for product prices", "default": false },
+    { "type": "font_picker", "id": "product_price_font", "label": "Product Price Font Family", "default": "assistant_n4" },
+    { "type": "range", "id": "product_price_font_size", "min": 12, "max": 24, "step": 1, "unit": "px", "label": "Product Price Font Size", "default": 14 },
+    { "type": "select", "id": "product_price_font_weight", "label": "Product Price Font Weight", "options": [
+        { "value": "400", "label": "Normal" },
+        { "value": "500", "label": "Medium" },
+        { "value": "600", "label": "Semi-bold" },
+        { "value": "700", "label": "Bold" }
+      ], "default": "500"
     },
-    {
-      "type": "header",
-      "content": "Product Badges"
-    },
-    {
-      "type": "text",
-      "id": "bestseller_badge_metafield",
-      "label": "Best Seller Badge Metafield",
-      "info": "Enter the metafield key (e.g., 'custom.bestseller_text') to display its value as a badge. This will override the tag-based badge."
-    },
-    {
-      "type": "text",
-      "id": "save_badge_metafield",
-      "label": "Save Badge Metafield",
-      "info": "Enter the metafield key (e.g., 'custom.save_text') to display its value as a badge. This will override the automatic sale percentage."
-    },
-    {
-      "type": "header",
-      "content": "Fallback Badges"
-    },
-    {
-      "type": "checkbox",
-      "id": "show_bestseller_badge",
-      "label": "Show 'Best Seller' badge (fallback)",
-      "info": "Shows on products with the tag 'bestseller' if no metafield is set.",
-      "default": true
-    },
-    {
-      "type": "checkbox",
-      "id": "show_save_badge",
-      "label": "Show 'Save %' badge (fallback)",
-      "info": "Shows on sale products if no metafield is set.",
-      "default": true
-    },
-    {
-      "type": "text",
-      "id": "save_badge_text_fallback",
-      "label": "Save badge text (fallback)",
-      "info": "Use '[percent]' to show the discount percentage.",
-      "default": "Save [percent]%"
-    },
-    {
-      "type": "header",
-      "content": "Section Link"
-    },
-    {
-      "type": "text",
-      "id": "link_text",
-      "label": "Link Text",
-      "default": "Shop All Best Sellers"
-    },
-    {
-      "type": "url",
-      "id": "link_url",
-      "label": "Link URL",
-      "info": "Leave blank to automatically link to the selected collection."
-    },
-    {
-      "type": "color_scheme",
-      "id": "color_scheme",
-      "label": "Section Color Scheme",
-      "default": "scheme-1"
-    },
-    {
-      "type": "header",
-      "content": "Typography Settings"
-    },
-    {
-      "type": "paragraph",
-      "content": "Customize the fonts and colors for text elements in this section."
-    },
-    {
-      "type": "header",
-      "content": "Section Title"
-    },
-    {
-      "type": "checkbox",
-      "id": "title_use_custom_font",
-      "label": "Use custom font for title",
-      "default": false
-    },
-    {
-      "type": "font_picker",
-      "id": "title_font",
-      "label": "Title Font Family",
-      "default": "sans-serif"
-    },
-    {
-      "type": "range",
-      "id": "title_font_size",
-      "min": 16, "max": 48, "step": 1,
-      "unit": "px", "label": "Title Font Size",
-      "default": 24
-    },
-    {
-      "type": "select",
-      "id": "title_font_weight",
-      "label": "Title Font Weight",
-      "options": [ { "value": "400", "label": "Normal" }, { "value": "500", "label": "Medium" }, { "value": "600", "label": "Semi-bold" }, { "value": "700", "label": "Bold" } ],
-      "default": "700"
-    },
-    {
-      "type": "color",
-      "id": "title_color",
-      "label": "Title Color",
-      "default": "#111827"
-    },
-    {
-      "type": "header",
-      "content": "Section Link"
-    },
-    {
-      "type": "checkbox",
-      "id": "link_use_custom_font",
-      "label": "Use custom font for link",
-      "default": false
-    },
-    {
-      "type": "font_picker",
-      "id": "link_font",
-      "label": "Link Font Family",
-      "default": "sans-serif"
-    },
-    {
-      "type": "range",
-      "id": "link_font_size",
-      "min": 12, "max": 24, "step": 1,
-      "unit": "px", "label": "Link Font Size",
-      "default": 14
-    },
-    {
-      "type": "select",
-      "id": "link_font_weight",
-      "label": "Link Font Weight",
-      "options": [ { "value": "400", "label": "Normal" }, { "value": "500", "label": "Medium" }, { "value": "600", "label": "Semi-bold" }, { "value": "700", "label": "Bold" } ],
-      "default": "600"
-    },
-    {
-      "type": "color",
-      "id": "link_color",
-      "label": "Link Color",
-      "default": "#374151"
-    },
-    {
-      "type": "header",
-      "content": "Product Title"
-    },
-    {
-      "type": "checkbox",
-      "id": "product_title_use_custom_font",
-      "label": "Use custom font for product titles",
-      "default": false
-    },
-    {
-      "type": "font_picker",
-      "id": "product_title_font",
-      "label": "Product Title Font Family",
-      "default": "sans-serif"
-    },
-    {
-      "type": "range",
-      "id": "product_title_font_size",
-      "min": 12, "max": 24, "step": 1,
-      "unit": "px", "label": "Product Title Font Size",
-      "default": 14
-    },
-    {
-      "type": "select",
-      "id": "product_title_font_weight",
-      "label": "Product Title Font Weight",
-      "options": [ { "value": "400", "label": "Normal" }, { "value": "500", "label": "Medium" }, { "value": "600", "label": "Semi-bold" }, { "value": "700", "label": "Bold" } ],
-      "default": "700"
-    },
-    {
-      "type": "color",
-      "id": "product_title_color",
-      "label": "Product Title Color",
-      "default": "#111827"
-    },
-    {
-      "type": "header",
-      "content": "Product Price"
-    },
-    {
-      "type": "checkbox",
-      "id": "product_price_use_custom_font",
-      "label": "Use custom font for product prices",
-      "default": false
-    },
-    {
-      "type": "font_picker",
-      "id": "product_price_font",
-      "label": "Product Price Font Family",
-      "default": "sans-serif"
-    },
-    {
-      "type": "range",
-      "id": "product_price_font_size",
-      "min": 12, "max": 24, "step": 1,
-      "unit": "px", "label": "Product Price Font Size",
-      "default": 14
-    },
-    {
-      "type": "select",
-      "id": "product_price_font_weight",
-      "label": "Product Price Font Weight",
-      "options": [ { "value": "400", "label": "Normal" }, { "value": "500", "label": "Medium" }, { "value": "600", "label": "Semi-bold" }, { "value": "700", "label": "Bold" } ],
-      "default": "500"
-    },
-    {
-      "type": "color",
-      "id": "product_price_color",
-      "label": "Product Price Color",
-      "default": "#1f2937"
-    }
+    { "type": "color", "id": "product_price_color", "label": "Product Price Color", "default": "#1f2937" }
   ],
   "presets": [
-    {
-      "name": "Best Seller Carousel"
-    }
+    { "name": "Best Seller Carousel" }
   ]
 }
 {% endschema %}
