@@ -3595,3 +3595,11 @@ details-disclosure > details {
     transform: translateX(100%) scaleX(0);
   }
 }
+
+
+@media(max-width:600px){
+
+  ul#product-grid {
+    display: flex;
+}
+}
