@@ -9,9 +9,7 @@
     assign link_href = collection.url
   endif
 
-  comment
-    Generates inline CSS styles for text elements based on theme editor settings.
-  endcomment
+ 
   assign title_style = ''
   if section.settings.title_use_custom_font and section.settings.title_font != blank
     assign title_style = title_style | append: 'font-family: ' | append: section.settings.title_font.family | append: ', ' | append: section.settings.title_font.fallback_families | append: ';'
@@ -86,7 +84,7 @@
                   <div class="relative">
                     <div class="relative w-full overflow-hidden rounded-md bg-gray-100 aspect-square group">
                       <a href="{{ product.url }}" aria-label="View details for {{ product.title | escape }}">
-                        {%- comment -%} Primary image, visible by default {%- endcomment -%}
+                        
                         <img
                           src="{{ product.featured_image | image_url: width: 500 }}"
                           alt="{{ product.featured_image.alt | default: product.title | escape }}"
@@ -95,7 +93,7 @@
                           height="500"
                           loading="lazy"
                         >
-                        {%- comment -%} Secondary image, visible on hover. Fallbacks to featured image if no second image exists. {%- endcomment -%}
+                        
                         {%- assign second_image = product.images[1] | default: product.featured_image -%}
                         <img
                           src="{{ second_image | image_url: width: 500 }}"
@@ -220,12 +218,12 @@
             scrollbar-color: #111827 #e5e7eb;
         }
 
-        /* For Chrome, Safari, and Edge */
+ 
         .carousel-container::-webkit-scrollbar {
-            height: 4px; /* Initial height of the scrollbar */
+            height: 4px; 
         }
         .carousel-container:hover::-webkit-scrollbar {
-            height: 6px; /* Height on hover */
+            height: 6px;
         }
         .carousel-container::-webkit-scrollbar-track {
             background-color: #e5e7eb;
